@@ -166,7 +166,7 @@ function App() {
 
         <h1>Malaria diagnosis</h1>
 
-        <p>Blood smear · automated review</p>
+        <p>Blood smear · Parasite Stage Identification & Automated Review · </p>
 
       </div>
 

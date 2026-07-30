@@ -11,13 +11,20 @@ CORS(app)
 # ---------------------------------------
 # Load YOLO Model
 # ---------------------------------------
-model = YOLO("best.pt")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "backend", "best.pt")
+
+model = YOLO(MODEL_PATH)
+
+# Print class names once at startup — confirms the retrained model's
+# labels still match the `counts` dict below
+print("Model classes:", model.names)
 
 # ---------------------------------------
 # Folders
 # ---------------------------------------
-UPLOAD_FOLDER = "uploads"
-RESULT_FOLDER = "results"
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+RESULT_FOLDER = os.path.join(BASE_DIR, "results")
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(RESULT_FOLDER, exist_ok=True)
@@ -73,11 +80,15 @@ def predict():
     # ---------------------------------------
     # YOLO Prediction
     # ---------------------------------------
-    results = model.predict(
-        source=image_path,
-        conf=0.25,
-        verbose=False
-    )
+    try:
+        results = model.predict(
+            source=image_path,
+            conf=0.25,
+            verbose=False
+        )
+    except Exception as e:
+        print("Prediction error:", e)
+        return jsonify({"error": "Model prediction failed"}), 500
 
     result = results[0]
 
@@ -141,6 +152,9 @@ def predict():
                     "type": label.title(),
                     "confidence": round(confidence * 100, 2)
                 })
+        else:
+            # Helps catch class-name mismatches after retraining
+            print(f"Warning: detected unmapped class '{label}'")
 
     # Highest confidence first
     infected_cells.sort(
