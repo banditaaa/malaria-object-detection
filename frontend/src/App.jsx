@@ -105,12 +105,24 @@ function App() {
 
     }
 
-    catch (err) {
+   catch (err) {
 
-      console.log(err);
-      alert("Prediction failed. Check that the backend server is running.");
+  console.log("FULL ERROR:", err);
 
-    }
+  if (err.response) {
+    alert(
+      "Backend reached but prediction failed: " +
+      JSON.stringify(err.response.data)
+    );
+  }
+  else if (err.request) {
+    alert("Cannot reach backend. Check CORS or internet.");
+  }
+  else {
+    alert("Error: " + err.message);
+  }
+
+}
 
     finally {
 
