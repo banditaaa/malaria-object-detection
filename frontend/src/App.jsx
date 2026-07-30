@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_BASE = "http://127.0.0.1:5000";
+const API_BASE = "https://malaria-object-detection.onrender.com";
 
 function App() {
 
