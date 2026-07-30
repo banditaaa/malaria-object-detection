@@ -1,0 +1,546 @@
+/* ===========================
+   Flash overlay + shake -- the big reveal moment
+=========================== */
+
+.flashOverlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    pointer-events:none;
+    opacity:0;
+}
+
+.flashOverlay.flash-infected{
+    background:#D8281E;
+    animation:flashPulse .5s ease-out forwards;
+}
+
+.flashOverlay.flash-healthy{
+    background:#1FAE72;
+    animation:flashPulse .5s ease-out forwards;
+}
+
+@keyframes flashPulse{
+    0%{opacity:0;}
+    15%{opacity:.85;}
+    100%{opacity:0;}
+}
+
+@keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-10px);}
+    40%{transform:translateX(9px);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(4px);}
+}
+
+.container.shake{
+    animation:shake .45s ease;
+}
+
+/* ===========================
+   Global
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:"Inter","Segoe UI",sans-serif;
+    background:linear-gradient(180deg,#0D0B1A,#1A1530);
+    color:#F4F1FA;
+    min-height:100vh;
+    transition:background 1.2s ease;
+}
+
+body.state-infected{
+    background:linear-gradient(180deg,#2B0C0C,#4A1414);
+}
+
+body.state-healthy{
+    background:linear-gradient(180deg,#06231C,#0E3B2E);
+}
+
+.container{
+    width:92%;
+    max-width:1180px;
+    margin:auto;
+    padding:48px 20px 70px;
+}
+
+/* ===========================
+   Header
+=========================== */
+
+.header{
+    background:linear-gradient(135deg,#5B3E9E 0%,#8154C9 50%,#B57BE0 100%);
+    background-size:200% 200%;
+    animation:gradientShift 8s ease infinite;
+    border-radius:28px;
+    padding:64px 40px;
+    text-align:center;
+    margin-bottom:36px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 30px 70px -20px rgba(91,62,158,.55);
+}
+
+@keyframes gradientShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.header::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 85% 15%,rgba(255,255,255,.25),transparent 55%);
+}
+
+.header::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 10% 100%,rgba(255,205,140,.22),transparent 50%);
+}
+
+.headerEyebrow{
+    position:relative;
+    font-size:12px;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:#FFD9A0;
+    font-weight:600;
+    margin-bottom:16px;
+    animation:fadeInUp .8s ease both;
+}
+
+.header h1{
+    position:relative;
+    font-family:"Fraunces","Georgia",serif;
+    font-size:52px;
+    font-weight:600;
+    color:#fff;
+    letter-spacing:0.2px;
+    animation:fadeInUp .8s ease .1s both;
+}
+
+.header p{
+    position:relative;
+    margin-top:12px;
+    font-size:16px;
+    color:#EFE6FA;
+    font-weight:400;
+    animation:fadeInUp .8s ease .2s both;
+}
+
+@keyframes fadeInUp{
+    from{opacity:0;transform:translateY(14px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+/* ===========================
+   Navigation
+=========================== */
+
+.navBar{
+    display:flex;
+    justify-content:center;
+    margin:0 auto 40px;
+    max-width:560px;
+    background:rgba(255,255,255,.06);
+    backdrop-filter:blur(12px);
+    border-radius:50px;
+    padding:6px;
+    box-shadow:0 12px 30px -16px rgba(0,0,0,.4);
+}
+
+.navButton{
+    flex:1;
+    padding:14px 20px;
+    border:none;
+    border-radius:44px;
+    background:transparent;
+    color:#F4F1FA;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+}
+
+.navButton:hover:not(:disabled){
+    background:rgba(255,255,255,.08);
+}
+
+.navButton:disabled{
+    color:rgba(244,241,250,.35);
+    cursor:not-allowed;
+}
+
+.activeBtn{
+    background:linear-gradient(135deg,#8154C9,#B57BE0) !important;
+    color:#fff !important;
+    box-shadow:0 8px 20px -8px rgba(129,84,201,.6);
+}
+
+/* ===========================
+   Shared surfaces
+=========================== */
+
+.uploadBox,.summary,.card,.statCard{
+    background:rgba(255,255,255,.05);
+    backdrop-filter:blur(16px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:24px;
+    box-shadow:0 20px 50px -26px rgba(0,0,0,.5);
+}
+
+.uploadBox{
+    padding:64px;
+    text-align:center;
+    position:relative;
+}
+
+.uploadBox h2,.summary h2,.card h2{
+    font-family:"Fraunces","Georgia",serif;
+    color:#fff;
+    font-weight:600;
+    font-size:24px;
+    margin-bottom:24px;
+    text-align:center;
+}
+
+.slideMark{
+    position:absolute;
+    width:14px;
+    height:14px;
+    border-color:#E8A64C;
+    border-style:solid;
+    opacity:.8;
+}
+
+.slideMarkTL{
+    top:18px;
+    left:18px;
+    border-width:2px 0 0 2px;
+    border-radius:4px 0 0 0;
+}
+
+.slideMarkBR{
+    bottom:18px;
+    right:18px;
+    border-width:0 2px 2px 0;
+    border-radius:0 0 4px 0;
+}
+
+.summary{
+    position:relative;
+}
+
+/* ===========================
+   File input
+=========================== */
+
+.fileLabel input[type=file]{
+    padding:14px;
+    font-size:15px;
+    margin:18px 0;
+    color:#F4F1FA;
+}
+
+.selectedFile{
+    margin-top:14px;
+    color:#C9AEF0;
+    font-weight:600;
+    font-size:14px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+
+button{
+    margin-top:24px;
+    padding:16px 44px;
+    border:none;
+    border-radius:50px;
+    background:linear-gradient(135deg,#5B3E9E,#8154C9);
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    transition:.25s;
+    box-shadow:0 14px 28px -12px rgba(91,62,158,.6);
+}
+
+button:hover:not(:disabled){
+    transform:translateY(-2px) scale(1.02);
+    box-shadow:0 20px 38px -14px rgba(91,62,158,.7);
+}
+
+button:active:not(:disabled){
+    transform:translateY(0) scale(0.98);
+}
+
+button:disabled{
+    background:rgba(255,255,255,.1);
+    cursor:not-allowed;
+    box-shadow:none;
+    transform:none;
+}
+
+/* ===========================
+   Detection images
+=========================== */
+
+.images{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    margin-top:36px;
+}
+
+.card{padding:26px;animation:fadeInUp .6s ease both;}
+
+.imageBox{
+    width:100%;
+    height:420px;
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,.25);
+}
+
+.previewImage{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+/* ===========================
+   Stat cards
+=========================== */
+
+.stats{
+    margin-top:36px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.statCard{
+    padding:30px 24px;
+    text-align:center;
+    animation:fadeInUp .5s ease both;
+}
+
+.statCard:nth-child(2){animation-delay:.08s;}
+.statCard:nth-child(3){animation-delay:.16s;}
+.statCard:nth-child(4){animation-delay:.24s;}
+
+.statCard h3{
+    color:#C9C2E0;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    margin-bottom:12px;
+}
+
+.statCard h1{
+    color:#fff;
+    font-family:"Fraunces","Georgia",serif;
+    font-size:40px;
+    font-weight:600;
+}
+
+.summary{
+    margin-top:36px;
+    padding:42px;
+}
+
+.summary p{
+    text-align:center;
+    color:#C9C2E0;
+    font-size:15px;
+    padding:24px 0;
+}
+
+/* ===========================
+   Tables
+=========================== */
+
+.countTable{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+}
+
+.countTable th{
+    background:linear-gradient(135deg,#5B3E9E,#8154C9);
+    color:#fff;
+    font-weight:600;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    padding:16px 18px;
+    text-align:left;
+}
+
+.countTable th:first-child{border-radius:12px 0 0 0;}
+.countTable th:last-child{border-radius:0 12px 0 0;}
+
+.countTable td{
+    padding:15px 18px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    font-size:14px;
+    color:#F4F1FA;
+}
+
+.countTable td:last-child{
+    color:#FFC978;
+    font-weight:600;
+}
+
+.countTable tr:hover{background:rgba(255,255,255,.04);}
+
+/* ===========================
+   Diagnosis panel -- the big reveal
+=========================== */
+
+.diagnosis{
+    margin-top:40px;
+    padding:64px;
+    border-radius:28px;
+    text-align:center;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 30px 70px -24px rgba(0,0,0,.55);
+    animation:diagnosisSlam .45s cubic-bezier(.17,.89,.32,1.49) both, screenShake .5s ease .1s;
+}
+
+@keyframes diagnosisSlam{
+    from{opacity:0;transform:scale(.7);}
+    to{opacity:1;transform:scale(1);}
+}
+
+@keyframes screenShake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-10px);}
+    40%{transform:translateX(9px);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(4px);}
+}
+
+.flashOverlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    pointer-events:none;
+    opacity:0;
+}
+
+.flashOverlay.flash-infected{
+    background:#C4432B;
+    animation:flashFade .5s ease-out forwards;
+}
+
+.flashOverlay.flash-healthy{
+    background:#1E8A6E;
+    animation:flashFade .5s ease-out forwards;
+}
+
+@keyframes flashFade{
+    0%{opacity:.85;}
+    100%{opacity:0;}
+}
+
+.diagnosis::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:radial-gradient(circle at 85% 15%,rgba(255,255,255,.22),transparent 55%);
+}
+
+.diagnosis::after{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    border-radius:50%;
+    animation:pulseRing 2.4s ease-out infinite;
+    background:radial-gradient(circle,rgba(255,255,255,.14),transparent 60%);
+}
+
+@keyframes pulseRing{
+    0%{transform:scale(.85);opacity:.9;}
+    70%{transform:scale(1.15);opacity:0;}
+    100%{transform:scale(1.15);opacity:0;}
+}
+
+.diagnosisEyebrow{
+    position:relative;
+    font-size:12px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    opacity:.9;
+    margin-bottom:10px;
+    font-weight:600;
+}
+
+.diagnosis h1{
+    position:relative;
+    font-family:"Fraunces","Georgia",serif;
+    font-size:64px;
+    font-weight:600;
+    margin:14px 0;
+    color:#fff;
+    letter-spacing:0.5px;
+}
+
+.diagnosis p{position:relative;font-size:17px;opacity:.94;}
+
+.infected{background:linear-gradient(135deg,#B02E1C,#E0533A);}
+.healthy{background:linear-gradient(135deg,#0F6B4F,#2FAE85);}
+
+/* ===========================
+   Loading state
+=========================== */
+
+.loading{
+    margin-top:20px;
+    text-align:center;
+    color:#C9AEF0;
+    font-weight:600;
+    font-size:14px;
+    animation:pulseText 1.4s ease infinite;
+}
+
+@keyframes pulseText{
+    0%,100%{opacity:.6;}
+    50%{opacity:1;}
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:1000px){
+.images{grid-template-columns:1fr;}
+.stats{grid-template-columns:1fr 1fr;}
+.imageBox{height:320px;}
+.header h1{font-size:34px;}
+.diagnosis h1{font-size:44px;}
+.navButton{font-size:12px;padding:12px 10px;}
+}
+
+@media(max-width:600px){
+.stats{grid-template-columns:1fr;}
+}
