@@ -80,9 +80,15 @@ function App() {
       setLoading(true);
 
       const res = await axios.post(
-        `${API_BASE}/predict`,
-        formData
-      );
+  `${API_BASE}/predict`,
+  formData,
+  {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    },
+    timeout: 120000
+  }
+);
 
       if (res.data.error) {
         alert(res.data.error);
