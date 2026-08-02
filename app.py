@@ -91,11 +91,14 @@ def predict():
         results = model.predict(
             source=image_path,
             conf=0.25,
+            imgsz=320,
             verbose=False
         )
+
     except Exception as e:
-        print("Prediction error:", e)
-        return jsonify({"error": "Model prediction failed"}), 500
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
 
     result = results[0]
 
