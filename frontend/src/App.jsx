@@ -2,7 +2,7 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = "https://malaria-object-detection-production.up.railway.app";
+const API_BASE = "https://malaria-object-detection-production.up.railway.app";
 
 function App() {
 
