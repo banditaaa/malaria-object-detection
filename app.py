@@ -19,7 +19,7 @@ CORS(
 # Load YOLO Model
 # ---------------------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "backend", "best.pt")
+MODEL_PATH = os.path.join(BASE_DIR, "best.pt")
 
 model = YOLO(MODEL_PATH)
 
